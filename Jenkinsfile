@@ -1,28 +1,9 @@
 pipeline {
-    agent {
-        label 'JavaBuildServer'
-    }
-    tools {
-        maven 'localMaven'
-    }
-
-stages{
-        stage('Build'){
-            steps {
-                sh 'mvn clean package'
-            }
-            post {
-                success {
-                    echo 'Archiving the artifacts'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                }
-            }
-        }
-
+    stages{
         stage ('Deployments'){
                     steps {
                         echo "Deploying the Artifacts into tomcat Server"
-                        deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat-credentials', path: '', url: 'http://23.22.211.197:8080')], contextPath: null, war: '**/*.war'                    }
+                        deploy adapters: [tomcat9(alternativeDeploymentContext: '', path: '', url: 'http://13.236.185.112:8080')], contextPath: null, war: '**/*.war'                    }
             }
         }
 }
